@@ -8,7 +8,7 @@ let password = crypto.createHash('sha512'/* 암호화방식 */).update('pw1234'/
 const createSalt = () => {
   return new Promise((resolve, reject) => {
     crypto.randomBytes(64 /* 바이트 크기 */
-      , /* 정상적으로 만들어지면 err == null, but == 만들어진 값 */ (err, buf) => {
+      , /* 정상적으로 만들어지면 err == null, buf == 만들어진 값 */ (err, buf) => {
       if(err) {
         reject(err)
       }

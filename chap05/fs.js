@@ -1,9 +1,9 @@
 //fs.js
 const fs = require('fs');
 
-fs.readFile('./path.js' // 읽을 파일
-  , 'utf-8' // 읽을 때 인코딩 방식
-  , (err, data) /* 콜백함수 */ => {
+fs.readFile('./path.js', // 읽을 파일
+  'utf-8', // 읽을 때 인코딩 방식
+  (err, data) /* 콜백함수 */ => {
     if(err) {
       console.error(err);
     }
