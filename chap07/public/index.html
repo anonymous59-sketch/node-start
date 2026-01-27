@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>박상원</title>
+</head>
+<body>
+  <h3>express.static 박상원</h3>
+  <form name="actionForm" action="/upload" method="post" enctype="multipart/form-data">
+    <!-- 요청방식은 post, 다양한 타입의 데이터가 넘어가니 enctype도 설정 -->
+     <!-- action으로 연결해서 바로 전송하는 방법 -->
+    아이디: <input type="text" name ="user_id"><br>
+    비밀번호: <input type="text" name ="user_pw"><br>
+    이름: <input type="text" name="user_name"><br>
+    이미지: <input type="file" name="user_img"><br>
+    <input type="submit" value="업로드">
+  </form>
+  <script>
+    // fetch함수를 이용해서 전송
+    document.querySelector('form[name="actionForm"]').addEventListener('submit', e => {
+      e.preventDefault();
+      // binary 데이터의 객체를 불러오기 위해서 이벤트시작에서부터 계산
+      // console.log(e);
+      // console.log(e.target[2].files[0]);
+      // console.log(document.querySelector('input[name="user_img"]').files[0]);
+      
+      // multipart해주는 객체
+      const formData = new FormData();
+      formData.append('user_id', document.querySelector('input[name="user_id"]').value);
+      formData.append('user_pw', document.querySelector('input[name="user_pw"]').value);
+      formData.append('user_name', document.querySelector('input[name="user_name"]').value);
+      formData.append('user_img', document.querySelector('input[name="user_img"]').files[0]);
+
+      // binary의 value는 파일 이름으로 불러온다.
+      
+      // fetch('/upload', {
+      //   method: 'POST',
+      //   body: formData // formData를 사용하면 header를 따로 설정할 필요가 없다.
+      // })
+      //   .then(res => res.json())
+      //   .then(data => console.log(data))
+      //   .catch(err => console.error(err)
+      // );
+
+      fetch('/create', {
+        method: 'POST',
+        body: formData
+      })
+        .then(res => res.json())
+        .then(result => console.log(result))
+        .catch(err => console.error(err));
+    })
+  </script>
+</body>
+</html>
