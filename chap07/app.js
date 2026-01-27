@@ -14,12 +14,14 @@ const SERVER_PORT = 3000;
 const storage = multer.diskStorage({
   // 첫번째는 저장경로
   destination: (req, file, cb) => {
-    // console.log('destination' + req, file);
+    // console.log(req);
+    // console.log(file);
     cb(null, 'public/images'/* 파일을 업로드 했을 때 첫번째 값은 에러값, 두번째 값은 파일의 저장 위치 */)
   },
   // 두번째는 overwrite가 되면 안되니까 파일 이름 설정
   filename: (req, file, cb) => {
-    // console.log('filename' + req, file);
+    // console.log(req);
+    // console.log(file);
     const file_encoding_name = Buffer.from(file.originalname, 'latin1').toString('utf-8'); // 인코딩 방식이 꼬여서 고침
     const ext = path.extname(file_encoding_name);
     const fn = path.parse(file_encoding_name).name;
