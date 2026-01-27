@@ -1,0 +1,21 @@
+{
+  "name": "chap07",
+  "version": "1.0.0",
+  "description": "node, express 활용 프로젝트",
+  "keywords": [
+    "Node",
+    "Express",
+    "Mysql",
+    "Nodemon"
+  ],
+  "license": "ISC",
+  "author": "SangWon",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

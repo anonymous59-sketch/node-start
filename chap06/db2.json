@@ -1,0 +1,120 @@
+{
+  "products": [
+    {
+      "id": "1001",
+      "name": "무선 마우스",
+      "price": 25000,
+      "seller": "테크스토어"
+    },
+    {
+      "id": "1002",
+      "name": "기계식 키보드",
+      "price": 89000,
+      "seller": "키보드월드"
+    },
+    {
+      "id": "1003",
+      "name": "27인치 모니터",
+      "price": 320000,
+      "seller": "모니터샵"
+    },
+    {
+      "id": "1004",
+      "name": "USB-C 허브",
+      "price": 45000,
+      "seller": "테크스토어"
+    },
+    {
+      "id": "1005",
+      "name": "블루투스 스피커",
+      "price": 67000,
+      "seller": "사운드몰"
+    },
+    {
+      "id": "1006",
+      "name": "노트북 거치대",
+      "price": 38000,
+      "seller": "오피스존"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "1",
+      "content": "마우스 감도가 좋고 가벼워요.",
+      "productId": 1001,
+      "writer": "홍길동"
+    },
+    {
+      "id": "2",
+      "content": "가격 대비 성능이 괜찮습니다.",
+      "productId": 1001,
+      "writer": "김영희"
+    },
+    {
+      "id": "3",
+      "content": "타건감이 정말 좋네요.",
+      "productId": 1002,
+      "writer": "이철수"
+    },
+    {
+      "id": "4",
+      "content": "소리가 조금 큰 편입니다.",
+      "productId": 1002,
+      "writer": "박민수"
+    },
+    {
+      "id": "5",
+      "content": "화면이 선명하고 눈이 편해요.",
+      "productId": 1003,
+      "writer": "정은지"
+    },
+    {
+      "id": "6",
+      "content": "업무용으로 쓰기 딱 좋아요.",
+      "productId": 1003,
+      "writer": "김개발"
+    },
+    {
+      "id": "7",
+      "content": "포트가 많아서 편리합니다.",
+      "productId": 1004,
+      "writer": "최디자인"
+    },
+    {
+      "id": "8",
+      "content": "발열이 조금 있는 편이에요.",
+      "productId": 1004,
+      "writer": "오준호"
+    },
+    {
+      "id": "9",
+      "content": "음질이 생각보다 좋아요.",
+      "productId": 1005,
+      "writer": "강수지"
+    },
+    {
+      "id": "10",
+      "content": "캠핑 갈 때 잘 쓰고 있습니다.",
+      "productId": 1005,
+      "writer": "윤도현"
+    },
+    {
+      "id": "11",
+      "content": "자세 교정에 도움이 됩니다.",
+      "productId": 1006,
+      "writer": "서지훈"
+    },
+    {
+      "id": "12",
+      "content": "노트북 열 관리가 잘 돼요.",
+      "productId": 1006,
+      "writer": "한지민"
+    },
+    {
+      "id": "13",
+      "content": "test content",
+      "productId": 1006,
+      "writer": "test writer"
+    }
+  ]
+}

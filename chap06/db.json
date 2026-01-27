@@ -1,0 +1,59 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "홍길동",
+      "email": "hong@test.com",
+      "role": "admin",
+      "createdAt": "2025-01-01"
+    },
+    {
+      "id": 2,
+      "name": "김영희",
+      "email": "kim@test.com",
+      "role": "user",
+      "createdAt": "2025-01-05"
+    }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "userId": 1,
+      "title": "json-server 사용법",
+      "content": "json-server로 빠르게 mock API를 만들 수 있어요.",
+      "likes": 5,
+      "createdAt": "2025-01-10"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "title": "프론트엔드 연습",
+      "content": "React와 함께 json-server를 사용해봅시다.",
+      "likes": 2,
+      "createdAt": "2025-01-12"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "postId": 1,
+      "userId": 2,
+      "content": "정말 유용하네요!",
+      "createdAt": "2025-01-11"
+    },
+    {
+      "id": 2,
+      "postId": 2,
+      "userId": 2,
+      "content": "정말 유용하네요!!",
+      "createdAt": "2025-01-12"
+    },
+    {
+      "id": 3,
+      "postId": 2,
+      "userId": 1,
+      "content": "정말 유용하네요!!",
+      "createdAt": "2025-01-13"
+    }
+  ]
+}
