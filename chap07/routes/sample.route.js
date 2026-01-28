@@ -6,7 +6,7 @@ const fs = require('fs');
 router.get('/test/:msg', (req, res) => {
   const message = req.params.msg
   // test.txt 작성
-  fs.writeFile('./test.txt', message, 'utf-8', (err, buf) => {
+  fs.writeFile('./etc/test.txt', message, 'utf-8', (err, buf) => {
     if(err) {
       console.error(err);
       return;
@@ -17,7 +17,7 @@ router.get('/test/:msg', (req, res) => {
 })
 
 router.get('/read', (req, res) => {
-  const text = fs.readFileSync('./test.txt', 'utf-8'/* , (err, buf) => {
+  const text = fs.readFileSync('./etc/test.txt', 'utf-8'/* , (err, buf) => {
     if(err) {
       console.error(err);
       return;

@@ -69,9 +69,9 @@ app.post('/upload', upload.single("user_img"), (req, res) => {
 app.post('/create', upload.single('user_img'), async(req, res) => {
   const {user_id, user_pw, user_name} = req.body;
   const file_name = req.file ? req.file.filename : null;
-  // console.log(file_name);
-  // console.log(req.body);
-  // console.log(req.file);
+  console.log(file_name);
+  console.log(req.body);
+  console.log(req.file);
   // 암호화를 위해 crypto 모듈 import하기
   let password = crypto.createHash('sha512').update(user_pw).digest('base64');
   try{
