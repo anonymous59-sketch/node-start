@@ -24,13 +24,21 @@
       // console.log(e);
       // console.log(e.target[2].files[0]);
       // console.log(document.querySelector('input[name="user_img"]').files[0]);
-      
+      const user_id = document.querySelector('input[name="user_id"]').value;
+      const user_pw = document.querySelector('input[name="user_pw"]').value
+      const user_name = document.querySelector('input[name="user_name"]').value
+      const user_img = document.querySelector('input[name="user_img"]').files[0]
+        
+      if(!user_id || !user_pw || !user_name) {
+        alert('필수 항목 입력해주세요');
+        return;
+      }
       // multipart해주는 객체
       const formData = new FormData();
-      formData.append('user_id', document.querySelector('input[name="user_id"]').value);
-      formData.append('user_pw', document.querySelector('input[name="user_pw"]').value);
-      formData.append('user_name', document.querySelector('input[name="user_name"]').value);
-      formData.append('user_img', document.querySelector('input[name="user_img"]').files[0]);
+      formData.append('user_id', user_id);
+      formData.append('user_pw', user_pw);
+      formData.append('user_name', user_name);
+      formData.append('user_img', user_img);
 
       // binary의 value는 파일 이름으로 불러온다.
       
@@ -47,8 +55,15 @@
         method: 'POST',
         body: formData
       })
-        .then(res => res.text())
-        .then(result => console.log(result))
+        .then(res => res.json())
+        .then(result => {
+          // console.log(result)
+          if(result.retCode == "OK") {
+            location.href = 'member.html';
+          } else {
+            alert(result.retMsg);
+          }
+        })
         .catch(err => console.error(err)
       );
     })

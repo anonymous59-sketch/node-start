@@ -1,0 +1,12 @@
+#list td:nth-child(3) {
+  width: 150px;
+  height: 100px;
+}
+
+td>img {
+  display: block;
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  border: 1px greenyellow solid;
+}

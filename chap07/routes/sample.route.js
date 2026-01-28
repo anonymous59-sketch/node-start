@@ -30,7 +30,7 @@ router.get('/read', (req, res) => {
 
 // http://localhost:3000/sample => sample.html이 화면에 출력
 router.get('/sample', (req, res) => {
-  const sample = fs.readFileSync('./sample.html', 'utf-8')
+  const sample = fs.readFileSync('./etc/sample.html', 'utf-8')
   res.send(sample);
   // res.redirect('/read'); // 현재 페이지를 지정된 페이지로 이동
   // res.render(); // 정적 페이지를 동적페이지로 변환하여 그리는 방식.
