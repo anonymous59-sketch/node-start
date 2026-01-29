@@ -1,0 +1,88 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #f4f6f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.mail-container {
+    background-color: #ffffff;
+    width: 420px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.mail-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.mail-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #555;
+}
+
+.mail-form input,
+.mail-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 18px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.mail-form textarea {
+    height: 140px;
+    resize: none;
+}
+
+.mail-form input:focus,
+.mail-form textarea:focus {
+    outline: none;
+    border-color: #4a90e2;
+}
+
+.mail-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4a90e2;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.mail-form button:hover {
+    background-color: #357bd8;
+}
+
+.file-input {
+  padding: 8px 4px;
+  font-size: 14px;
+}
+
+.file-input::-webkit-file-upload-button {
+  background-color: #4a6cf7;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.file-input::-webkit-file-upload-button:hover {
+  background-color: #3b5be0;
+}

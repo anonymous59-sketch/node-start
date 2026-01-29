@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>박상원 메일</title>
+  <link rel="stylesheet" href="css/mail.css">
+</head>
+<body>
+  <div class="mail-container">
+    <h2>메일 보내기 (박상원)</h2>
+    <form class="mail-form" id="sendmail" method="post" action="/mail_send">
+      <label for="to">수신자</label>
+      <input type="email" id="to" placeholder="example@email.com" required>
+
+      <label for="subject">메일 제목</label>
+      <input type="text" id="subject" placeholder="제목을 입력하세요" required>
+
+      <label for="content">메일 내용</label>
+      <textarea id="content" placeholder="메일 내용을 입력하세요" required></textarea>
+
+      <label for="attachment">첨부파일</label>
+      <input type="file" id="attachment" name="attachment" class="file-input" multiple>
+
+      <button type="submit">보내기</button>
+    </form>
+  </div>
+  <script src="js/sendmail.js"></script>
+</body>
+</html>
