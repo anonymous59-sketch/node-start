@@ -1,7 +1,7 @@
 // nodemailer.js
 const nodemailer = require('nodemailer');
 
-console.log(process.env);
+// console.log(process.env);
 
 const transporter = nodemailer.createTransport({
   host:'smtp.daum.net',
@@ -29,6 +29,6 @@ const transporter = nodemailer.createTransport({
 //   // console.dir(info, {depth:5})
 // });
 
-console.log('sendmail start ==> ') // 비동기처리라서 확인용도
+// console.log('sendmail start ==> ') // 비동기처리라서 확인용도
 
 module.exports = transporter;

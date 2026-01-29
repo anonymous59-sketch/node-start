@@ -1,5 +1,5 @@
 // 환경변수는 최상위로 두어서 제일 먼저 실행하는 것
-require('dotenv').config();
+require('dotenv').config({ silent: true });
 
 // app.js
 const express = require('express');
@@ -12,6 +12,7 @@ const pool = require('./db.js');
 const crypto = require('crypto');
 const fs = require('fs');
 const transporter = require('./extentions/nodemailer.js');
+const cron_job = require('./extentions/nodecron.js');
 // console.log(process.env);
 // 서버 실행 포트 설정
 const SERVER_PORT = 3000;
@@ -39,6 +40,41 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({storage}); // mutler 모듈의 인스턴스
+// multer를 여러번 사용하고싶으면 인스턴스를 여러개 사용하기. 아래는 코드 예시
+// const multer = require('multer');
+
+// // 저장소 1
+// const storage1 = multer.diskStorage({
+//   destination: 'uploads/profile',
+//   filename: (req, file, cb) => {
+//     cb(null, file.originalname);
+//   }
+// });
+
+// // 저장소 2
+// const storage2 = multer.diskStorage({
+//   destination: 'uploads/post',
+//   filename: (req, file, cb) => {
+//     cb(null, Date.now() + '-' + file.originalname);
+//   }
+// });
+
+// const uploadProfile = multer({ storage: storage1 });
+// const uploadPost = multer({ storage: storage2 });
+
+// multer 분리, 메일 업로드용
+const storage1 = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/mail')
+  },
+  filename: (req, file, cb) => {
+    const file_encoding_name =  Buffer.from(file.originalname, 'latin1').toString('utf-8');
+    const ext = path.extname(file_encoding_name);
+    const fn = path.parse(file_encoding_name).name;
+    cb(null, fn + Date.now() + ext);
+  }
+});
+const upload1 = multer({storage: storage1});
 
 // 정적페이지를 url로 접근할 수 있도록 하는 모듈
 app.use(express.static('public'));
@@ -54,30 +90,96 @@ app.get('/', (req,res) => {
 // 라우팅 사용
 app.use('/sample', sampleRoute);
 
+app.get('/start', (req, res) => {
+  cron_job.start();
+  res.send('메일 발송 시작됨');
+})
+
+app.get('/end', (req, res) => {
+  cron_job.stop();
+  res.send('메일 발송 종료됨');
+})
+
 // 메일 발송 
-app.post('/mail_send', (req, res) => {
+app.post('/mail_send', upload1.array('attachment'), (req, res) => {
   const {to, subject, html} = req.body;
-  console.log(path.join(__dirname, 'public/images/'));
+  // console.log(path.join(__dirname, 'public/images/'));
+  // console.log(req.files);
   transporter.sendMail({
-    from: 'rnldudnsguy@daum.net',
+    from: process.env.FROM + '@daum.net',
     to,
     subject,
     html,
-    attachments: [{/* 여러 건 첨부가 가능해서 배열안의 객체 형식, */
-      filename: '음식.jpg',
-      path: path.join(__dirname, 'public/images/음식1769589926859.jpg')
-    }],
+    attachments: req.files.map(file => ({
+      filename: file.filename,
+      path: path.join(__dirname, 'public/mail/', file.filename)
+    }))
+    // attachments: [{/* 여러 건 첨부가 가능해서 배열안의 객체 형식, */
+    //   filename: req.file.filename,
+    //   path: path.join(__dirname, 'public/mail/' + req.file.filename)
+    // }],
   }, (err, info) => {
     if(err) {
       console.log('오류발생', err);
       res.json({retCode: 'NG', retMsg : err});
     }
     // console.log(`sendmail OK : `, info);
+    req.files.forEach(delFile => {
+      const path1 = path.join(__dirname, 'public/mail', delFile.filename);
+      fs.unlink(path1, err => err /* ? console.error(`메일 보낸 후 파일 삭제 실패`) : console.log('메일 보낸 후 파일 삭제 성공') */)
+    })
+
     res.json({retCode: "OK", retMsg : info});
     // console.dir(info, {depth:5})
   });
 
 console.log('sendmail start ==> ') // 비동기처리라서 확인용도
+});
+
+// /members/:guest@email.com
+app.get('/members/:to', async (req, res) => {
+  const to = req.params.to;
+  try {
+    const [result, rows] = await pool.query(`SELECT user_id "아이디", user_name "이름", user_img "사진", responsibility "권한" FROM member`)
+    // console.log(result);
+    let html = `<table border = '1px'>
+    <thead>
+      <tr>
+        <th>아이디</th>
+        <th>이름</th>
+        <th>사진</th>
+        <th>권한</th>
+      </tr>
+    </thead>
+    <tbody>`;
+    result.forEach(elem => {
+      // console.log(elem['사진']);
+      const imgDir = path.join('public/images', elem['사진']) // 경로가 맞지 않음. 웹서버기준 경로라서 로컬 경로는 사용이 안됨
+      // const imgDir = `http://192.168.0.16:3000/images/${elem['사진']}`
+      html += `<tr>
+        <td>${elem['아이디']}</td>
+        <td>${elem['이름']}</td>
+        <td><img src="${imgDir}" alt="회원이미지"></td>
+        <td>${elem['권한']}</td>
+      </tr>`
+    });
+    html += `</tbody></table>`;
+    // console.log(html);
+    transporter.sendMail({
+      from: process.env.FROM + '@daum.net',
+      to,
+      subject: '회원목록',
+      html,
+    }, (err, info) => {
+      if(err) {
+        res.json({retCode: 'NG', retMsg : err});
+      }
+      res.json({retCode: "OK", retMsg : info});
+    })
+  } catch(err) {
+    console.log(err);
+    res.json({retCode: 'error', retMsg : err});
+  };
 })
 
 app.post('/upload', upload.single("user_img"), (req, res) => {
