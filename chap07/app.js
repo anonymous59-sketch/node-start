@@ -40,27 +40,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({storage}); // mutler 모듈의 인스턴스
-// multer를 여러번 사용하고싶으면 인스턴스를 여러개 사용하기. 아래는 코드 예시
-// const multer = require('multer');
-
-// // 저장소 1
-// const storage1 = multer.diskStorage({
-//   destination: 'uploads/profile',
-//   filename: (req, file, cb) => {
-//     cb(null, file.originalname);
-//   }
-// });
-
-// // 저장소 2
-// const storage2 = multer.diskStorage({
-//   destination: 'uploads/post',
-//   filename: (req, file, cb) => {
-//     cb(null, Date.now() + '-' + file.originalname);
-//   }
-// });
-
-// const uploadProfile = multer({ storage: storage1 });
-// const uploadPost = multer({ storage: storage2 });
+// multer를 여러번 사용하고싶으면 인스턴스를 여러개 사용하기.
 
 // multer 분리, 메일 업로드용
 const storage1 = multer.diskStorage({
@@ -71,7 +51,8 @@ const storage1 = multer.diskStorage({
     const file_encoding_name =  Buffer.from(file.originalname, 'latin1').toString('utf-8');
     const ext = path.extname(file_encoding_name);
     const fn = path.parse(file_encoding_name).name;
-    cb(null, fn + Date.now() + ext);
+    const fileName = path.basename(file_encoding_name);
+    cb(null, fileName);
   }
 });
 const upload1 = multer({storage: storage1});
@@ -133,7 +114,7 @@ app.post('/mail_send', upload1.array('attachment'), (req, res) => {
     // console.dir(info, {depth:5})
   });
 
-console.log('sendmail start ==> ') // 비동기처리라서 확인용도
+// console.log('sendmail start ==> ') // 비동기처리라서 확인용도
 });
 
 // /members/:guest@email.com
