@@ -13,6 +13,7 @@ const crypto = require('crypto');
 const fs = require('fs');
 const transporter = require('./extentions/nodemailer.js');
 const cron_job = require('./extentions/nodecron.js');
+const xlsx = require('xlsx');
 // console.log(process.env);
 // 서버 실행 포트 설정
 const SERVER_PORT = 3000;
@@ -55,7 +56,22 @@ const storage1 = multer.diskStorage({
     cb(null, fileName);
   }
 });
+
 const upload1 = multer({storage: storage1});
+
+const storage2 = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './uploads')
+  },
+  filename: (req, file, cb) => {
+    const file_encoding_name =  Buffer.from(file.originalname, 'latin1').toString('utf-8');
+    const ext = path.extname(file_encoding_name);
+    const fn = path.parse(file_encoding_name).name;
+    const fileName = path.basename(file_encoding_name);
+    cb(null, fn + Date.now() + ext);
+  }
+});
+const upload2 = multer({storage: storage2});
 
 // 정적페이지를 url로 접근할 수 있도록 하는 모듈
 app.use(express.static('public'));
@@ -71,15 +87,44 @@ app.get('/', (req,res) => {
 // 라우팅 사용
 app.use('/sample', sampleRoute);
 
+let job = null;
 app.get('/start', (req, res) => {
-  cron_job.start();
+  if(!job) {
+    job = cron_job();
+    job.start();
+  }
   res.send('메일 발송 시작됨');
 })
 
 app.get('/end', (req, res) => {
-  cron_job.stop();
+  if(job) {
+    job.stop();
+  }
   res.send('메일 발송 종료됨');
 })
+
+// 엑셀 업로드 > 신규회원 추가,
+// 요청방식 post, url = /upload/member, 
+app.post('/update/member', upload2.single('file'), async (req, res) => {
+  // console.log(req.file)
+  const excel = req.file;
+  const fileDir = path.join(__dirname, 'uploads', excel.filename)
+  const workbook = xlsx.readFile(fileDir);
+  const firstSheetName = workbook.SheetNames[0];
+  const firstSheet = workbook.Sheets[firstSheetName];
+  const fileContent = xlsx.utils.sheet_to_json(firstSheet);
+
+  // console.log(fileContent);
+  try {
+    fileContent.forEach(elem => {
+      pool.query(`UPDATE member SET user_name = ? WHERE user_id = ?`, [elem['user_name'], elem['user_id']]);
+    });
+    fs.unlink(fileDir, err => err ? console.error(`파일 삭제 중 에러`, err) : err)
+    res.json({retCode:"OK"});
+  } catch(err) {
+    console.error(`엑셀파일로 데이터베이스 업데이트 중 에러`, err);
+  }
+});
 
 // 메일 발송 
 app.post('/mail_send', upload1.array('attachment'), (req, res) => {
@@ -182,9 +227,9 @@ app.post('/upload', upload.single("user_img"), (req, res) => {
 app.post('/create', upload.single('user_img'), async(req, res) => {
   const {user_id, user_pw, user_name} = req.body;
   const file_name = req.file ? req.file.filename : null;
-  console.log(file_name);
-  console.log(req.body);
-  console.log(req.file);
+  // console.log(file_name);
+  // console.log(req.body);
+  // console.log(req.file);
   // 암호화를 위해 crypto 모듈 import하기
   let password = crypto.createHash('sha512').update(user_pw).digest('base64');
   try{

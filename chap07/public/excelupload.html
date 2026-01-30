@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>엑셀 파일 업로드</title>
+  <link rel="stylesheet" href="css/upload.css" />
+</head>
+<body>
+
+  <div class="upload-container">
+    <h2 class="upload-title">엑셀 파일 업로드(멤버 업데이트용)</h2>
+    <h3 class="upload-title">박상원</h3>
+    <div class="upload-box">
+      <input type="file" id="excelUpload" class="file-input">
+
+      <label for="excelUpload" class="file-label">
+        <span class="file-icon">📊</span>
+        <span class="file-text">
+          엑셀 파일을 선택하거나<br/>
+          여기에 드래그하세요
+        </span>
+        <span class="file-subtext">(.xls, .xlsx)</span>
+      </label>
+    </div>
+
+    <button class="upload-button">업로드</button>
+  </div>
+
+  <script src="js/excelupload.js"></script>
+</body>
+</html>

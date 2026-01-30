@@ -20,7 +20,7 @@ let result = xlsx.utils.sheet_to_json(firstSheet);
 for (let elem of result) {
   // console.log(elem);
   const password = crypto.createHash('sha512').update('' + elem['user_password']).digest('base64');
-  awaitpool.query(`UPDATE member SET user_name = ? WHERE user_id = ?`, [elem['user_name'], elem['user_id']], (err, data) => {
+  pool.query(`UPDATE member SET user_name = ? WHERE user_id = ?`, [elem['user_name'], elem['user_id']], (err, data) => {
     if(err) {
       console.log(err);
     }
